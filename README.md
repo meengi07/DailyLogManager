@@ -1,4 +1,4 @@
-# TITLE : DailyLogManager
+# TITLE : LogSweep
 
 ## Infomation
 서버 시간 기준으로 매일 00시에 실행되는 로그 파일 관리 라이브러리
