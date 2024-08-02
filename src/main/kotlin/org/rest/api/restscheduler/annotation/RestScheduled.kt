@@ -17,5 +17,5 @@ annotation class RestScheduled(
     @get:AliasFor(annotation = Scheduled::class, attribute = "fixedRate")
     val fixedRate: Long = -1,
 
-    val schedulerName: String = ""
+    val name: String = ""
 )
