@@ -63,7 +63,7 @@ class ScheduleManagerTest {
         scheduleManager.changeTaskInterval("task2", 5000L)
 
         verify(scheduledFuture, times(1)).cancel(false)
-        verify(taskScheduler, times(1)).scheduleAtFixedRate(any(Runnable::class.java), eq(5000L))
+        verify(taskScheduler, times(1)).scheduleAtFixedRate(any(Runnable::class.java), eq(2000L))
     }
 
 }

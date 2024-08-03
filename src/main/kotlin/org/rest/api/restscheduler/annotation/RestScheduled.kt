@@ -12,10 +12,10 @@ annotation class RestScheduled(
     val cron: String = "",
 
     @get:AliasFor(annotation = Scheduled::class, attribute = "fixedDelay")
-    val fixedDelay: Long = -1,
+    val fixedDelay: Long = -1L,
 
     @get:AliasFor(annotation = Scheduled::class, attribute = "fixedRate")
-    val fixedRate: Long = -1,
+    val fixedRate: Long = -1L,
 
     val name: String = ""
 )
