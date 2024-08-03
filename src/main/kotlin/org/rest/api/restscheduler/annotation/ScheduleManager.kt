@@ -2,6 +2,7 @@ package org.rest.api.restscheduler.annotation
 
 import org.springframework.scheduling.TaskScheduler
 import org.springframework.stereotype.Component
+import java.time.Duration
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ScheduledFuture
 
@@ -11,10 +12,10 @@ class ScheduleManager(
 ) {
 
     private val scheduledTasks = ConcurrentHashMap<String, ScheduledFuture<*>>()
-    private val taskIntervals = ConcurrentHashMap<String, Long>()
+    private val taskIntervals = ConcurrentHashMap<String, Duration>()
     private val tasks = ConcurrentHashMap<String, Runnable>()
 
-    fun scheduleTask(name: String, interval: Long, task: Runnable) {
+    fun scheduleTask(name: String, interval: Duration, task: Runnable) {
         val future = taskScheduler.scheduleAtFixedRate(task, interval)
         scheduledTasks[name] = future
         taskIntervals[name] = interval
@@ -28,7 +29,7 @@ class ScheduleManager(
         tasks.remove(name)
     }
 
-    fun changeTaskInterval(name: String, newInterval: Long) {
+    fun changeTaskInterval(name: String, newInterval: Duration) {
         stopTask(name)
         val task = tasks[name]
         if (task != null) {
@@ -38,5 +39,5 @@ class ScheduleManager(
 
     fun isTaskRunning(name: String): Boolean = scheduledTasks.containsKey(name)
 
-    fun checkTaskInterval(name: String): Long? = taskIntervals[name]
+    fun checkTaskInterval(name: String): Long? = taskIntervals[name].let { it?.toMillis() }
 }

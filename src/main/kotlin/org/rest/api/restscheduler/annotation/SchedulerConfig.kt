@@ -15,4 +15,9 @@ class SchedulerConfig {
         return scheduler
     }
 
+    @Bean
+    fun scheduleManager(taskScheduler: TaskScheduler): ScheduleManager {
+        return ScheduleManager(taskScheduler)
+    }
+
 }

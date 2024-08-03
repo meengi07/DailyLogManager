@@ -4,9 +4,10 @@ import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.stereotype.Component
 import org.springframework.util.ReflectionUtils
 import java.lang.reflect.Method
+import java.time.Duration
 
 @Component
-class RestScheduledBeanProcessor(
+class ScheduledBeanProcessor(
     private val scheduleManager: ScheduleManager
 ): BeanPostProcessor {
     override fun postProcessAfterInitialization(bean: Any, beanName: String): Any {
@@ -28,9 +29,11 @@ class RestScheduledBeanProcessor(
         }
 
         if (restScheduled.fixedRate > 0) {
-            scheduleManager.scheduleTask(restScheduled.name, restScheduled.fixedRate, task)
+            val millis = Duration.ofMillis(restScheduled.fixedRate)
+            scheduleManager.scheduleTask(restScheduled.name, millis, task)
         } else if (restScheduled.fixedDelay > 0) {
-            scheduleManager.scheduleTask(restScheduled.name, restScheduled.fixedDelay, task)
+            val delay = Duration.ofMillis(restScheduled.fixedDelay)
+            scheduleManager.scheduleTask(restScheduled.name, delay, task)
         }
     }
 }
