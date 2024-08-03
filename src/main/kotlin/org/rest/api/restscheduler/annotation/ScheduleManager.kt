@@ -23,10 +23,15 @@ class ScheduleManager(
     }
 
     fun stopTask(name: String) {
-        scheduledTasks[name]?.cancel(false)
-        scheduledTasks.remove(name)
-        taskIntervals.remove(name)
-        tasks.remove(name)
+        if(checkScheduledStatus(name)) {
+            val taskFuture = scheduledTasks[name]
+            taskFuture?.cancel(true)
+            scheduledTasks.remove(name)
+            taskIntervals.remove(name)
+            tasks.remove(name)
+        } else {
+            throw IllegalArgumentException("Task $name is not running")
+        }
     }
 
     fun changeTaskInterval(name: String, newInterval: Duration) {
@@ -40,4 +45,8 @@ class ScheduleManager(
     fun isTaskRunning(name: String): Boolean = scheduledTasks.containsKey(name)
 
     fun checkTaskInterval(name: String): Long? = taskIntervals[name].let { it?.toMillis() }
+
+    fun checkScheduledTasks(): List<String> = scheduledTasks.keys.toList()
+
+    fun checkScheduledStatus(name: String): Boolean = scheduledTasks[name] != null
 }
